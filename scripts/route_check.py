@@ -354,8 +354,9 @@ def fetch_routes(cmd):
         output = subprocess.check_output(cmd, text=True)
         # Strip namespace prefix if present (e.g., "asic1:\n{...}" -> "{...}")
         # The SONiC wrapper script adds "asicN:" prefix for multi-asic
+        # On single ASIC linecards, it may just add ":" prefix
         first_line = output.split('\n')[0].strip() if output else ''
-        if re.match(r'^asic\d+:$', first_line):
+        if re.match(r'^(asic\d+)?:$', first_line):
             first_newline = output.find('\n')
             if first_newline != -1:
                 output = output[first_newline + 1:]
