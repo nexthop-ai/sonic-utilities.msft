@@ -242,18 +242,20 @@ class ConnectionPool:
         self.cache = dict()  # Pool of SonicV2Connector objects
 
     def initialize_connector(self, ns):
-        if not SonicDBConfig.isInit():
-            if multi_asic.is_multi_asic():
+        if multi_asic.is_multi_asic():
+            if not SonicDBConfig.isGlobalInit():
                 SonicDBConfig.load_sonic_global_db_config()
-            else:
-                SonicDBConfig.load_sonic_db_config()
+        elif not SonicDBConfig.isInit():
+            SonicDBConfig.load_sonic_db_config()
         return SonicV2Connector(namespace=ns, use_unix_socket_path=True)
 
     def get(self, db_name, ns, update=False):
         """ Returns a SonicV2Connector Object and caches it for further requests """
         if ns not in self.cache:
             self.cache[ns] = {}
+        if CONN not in self.cache[ns]:
             self.cache[ns][CONN] = self.initialize_connector(ns)
+        if CONN_TO not in self.cache[ns]:
             self.cache[ns][CONN_TO] = set()
         if update or db_name not in self.cache[ns][CONN_TO]:
             self.cache[ns][CONN].connect(db_name)
