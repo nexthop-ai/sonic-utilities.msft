@@ -1571,10 +1571,7 @@ def apply_patch(ctx, patch_file_path, format, dry_run, parallel, ignore_non_yang
 
     print_dry_run_message(dry_run)
 
-    trace_io = None
     try:
-        if path_trace:
-            trace_io = open(path_trace, 'w')
         _gcu_apply_patch_from_file(
             patch_file_path,
             config_format_name=format,
@@ -1583,7 +1580,6 @@ def apply_patch(ctx, patch_file_path, format, dry_run, parallel, ignore_non_yang
             parallel=parallel,
             ignore_non_yang_tables=ignore_non_yang_tables,
             ignore_path=ignore_path,
-            trace_io=trace_io,
         )
 
         log.log_notice("Patch applied successfully.")
@@ -1591,9 +1587,6 @@ def apply_patch(ctx, patch_file_path, format, dry_run, parallel, ignore_non_yang
     except Exception as ex:
         click.secho("Failed to apply patch due to: {}".format(ex), fg="red", underline=True, err=True)
         ctx.fail(ex)
-    finally:
-        if trace_io:
-            trace_io.close()
 
 @config.command()
 @click.argument('target-file-path', type=str, required=True)
