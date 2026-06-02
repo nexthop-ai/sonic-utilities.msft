@@ -1307,7 +1307,6 @@ class BulkLeafListMoveGenerator:
                         self._is_leaf_list(current_val) and
                         self._is_leaf_list(target_val)):
                     yield JsonMoveGroup(
-                        self.__class__.__name__,
                         JsonMove(diff, OperationType.REPLACE, list(tokens), list(tokens)),
                     )
             elif isinstance(current_val, dict) and isinstance(target_val, dict):
