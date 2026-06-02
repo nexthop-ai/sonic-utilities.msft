@@ -479,23 +479,15 @@ def list_checkpoints(args):
     """List all available checkpoints."""
     try:
         updater = GenericUpdater()
-        checkpoints = updater.list_checkpoints(args.time, args.verbose)
+        checkpoints = updater.list_checkpoints(args.verbose)
 
         if not checkpoints:
             print("No checkpoints found.")
             return
 
-        if args.time and isinstance(checkpoints[0], dict):
-            print("Available checkpoints:")
-            for checkpoint in checkpoints:
-                print(
-                    f"  - {checkpoint['name']} "
-                    f"(Last Modified: {checkpoint['time']})"
-                )
-        else:
-            print("Available checkpoints:")
-            for checkpoint in checkpoints:
-                print(f"  - {checkpoint}")
+        print("Available checkpoints:")
+        for checkpoint in checkpoints:
+            print(f"  - {checkpoint}")
     except Exception as ex:
         print_error(f"Failed to list checkpoints: {ex}")
         sys.exit(1)
@@ -653,10 +645,6 @@ Examples:
     # ---- list-checkpoints ----
     p = subparsers.add_parser(
         'list-checkpoints', help='List all available checkpoints',
-    )
-    p.add_argument(
-        '-t', '--time', action='store_true',
-        help='Include last modified time for each checkpoint',
     )
     p.add_argument(
         '-v', '--verbose', action='store_true',
