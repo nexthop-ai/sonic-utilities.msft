@@ -252,8 +252,7 @@ def validate_patch(patch_ops, all_running_config):
 
 def apply_patch_for_scope(scope_changes, results, config_format,
                           verbose, dry_run,
-                          ignore_non_yang_tables, ignore_path,
-                          trace_io=None):
+                          ignore_non_yang_tables, ignore_path):
     """Apply a patch for a single ASIC scope and record the outcome in
     *results* (a shared dict)."""
     scope, changes = scope_changes
@@ -275,7 +274,6 @@ def apply_patch_for_scope(scope_changes, results, config_format,
             dry_run,
             ignore_non_yang_tables,
             ignore_path,
-            trace_io=trace_io,
         )
         results[scope_for_log] = {"success": True, "message": "Success"}
         logger.info("apply-patch succeeded for %s", scope_for_log)
@@ -295,7 +293,7 @@ def _apply_patch_wrapper(args):
 
 def apply_patch_from_file(patch_file_path, config_format_name, verbose,
                           dry_run, parallel, ignore_non_yang_tables,
-                          ignore_path, preprocess=True, trace_io=None):
+                          ignore_path, preprocess=True):
     """Read a JSON-Patch file and apply it — the single implementation
     used by all entry points.
 
@@ -316,9 +314,6 @@ def apply_patch_from_file(patch_file_path, config_format_name, verbose,
         ``append_emptytables_if_required``, ``filter_duplicate_patch_operations``
         and ``validate_patch``.  Callers that already performed these steps
         (or intentionally want to skip them) can pass *False*.
-    trace_io : IO, optional
-        Writable file-like object for writing the patch-sorter decision path
-        trace as JSON.  ``None`` (default) disables tracing.
 
     Raises
     ------
@@ -374,7 +369,7 @@ def apply_patch_from_file(patch_file_path, config_format_name, verbose,
         with concurrent.futures.ThreadPoolExecutor() as executor:
             arguments = [
                 (sc, results, config_format, verbose, dry_run,
-                 ignore_non_yang_tables, ignore_path, trace_io)
+                 ignore_non_yang_tables, ignore_path)
                 for sc in changes_by_scope.items()
             ]
             futures = [
@@ -387,7 +382,6 @@ def apply_patch_from_file(patch_file_path, config_format_name, verbose,
             apply_patch_for_scope(
                 scope_changes, results, config_format,
                 verbose, dry_run, ignore_non_yang_tables, ignore_path,
-                trace_io,
             )
 
     # 5. Aggregate results
@@ -509,16 +503,12 @@ def list_checkpoints(args):
 
 def apply_patch(args):
     """Apply a configuration patch — delegates to apply_patch_from_file."""
-    trace_file = None
     try:
         if args.verbose:
             print(f"Applying patch from: {args.patch_file}")
             print(f"Format: {args.format}")
             if args.dry_run:
                 print("** DRY RUN EXECUTION **")
-
-        if getattr(args, 'path_trace', None):
-            trace_file = open(args.path_trace, 'w')
 
         apply_patch_from_file(
             patch_file_path=args.patch_file,
@@ -529,16 +519,12 @@ def apply_patch(args):
             ignore_non_yang_tables=args.ignore_non_yang_tables,
             ignore_path=args.ignore_path,
             preprocess=True,
-            trace_io=trace_file,
         )
 
         print_success("Patch applied successfully.")
     except Exception as ex:
         print_error(f"Failed to apply patch: {ex}")
         sys.exit(1)
-    finally:
-        if trace_file:
-            trace_file.close()
 
 
 def replace_config(args):
@@ -707,12 +693,6 @@ Examples:
         '-i', '--ignore-path', action='append', default=[],
         help='Ignore validation for config specified by given path '
              '(JsonPointer)',
-    )
-    p.add_argument(
-        '-t', '--path-trace',
-        metavar='FILE',
-        default=None,
-        help='Filename to write decision path trace for patch generation as JSON',
     )
 
     # ---- replace ----
