@@ -537,9 +537,13 @@
         "expected_changes": [
             [
                 {
-                    "op": "add",
-                    "path": "/ACL_TABLE/EVERFLOWV6/ports/0",
-                    "value": "Ethernet0"
+                    "op": "replace",
+                    "path": "/ACL_TABLE/EVERFLOWV6/ports",
+                    "value": [
+                        "Ethernet0",
+                        "Ethernet4",
+                        "Ethernet8"
+                    ]
                 }
             ]
         ]
@@ -867,23 +871,14 @@
             ],
             [
                 {
-                    "op": "add",
-                    "path": "/ACL_TABLE/NO-NSW-PACL-V4/ports/1",
-                    "value": "Ethernet1"
-                }
-            ],
-            [
-                {
-                    "op": "add",
-                    "path": "/ACL_TABLE/NO-NSW-PACL-V4/ports/2",
-                    "value": "Ethernet2"
-                }
-            ],
-            [
-                {
-                    "op": "add",
-                    "path": "/ACL_TABLE/NO-NSW-PACL-V4/ports/3",
-                    "value": "Ethernet3"
+                    "op": "replace",
+                    "path": "/ACL_TABLE/NO-NSW-PACL-V4/ports",
+                    "value": [
+                        "Ethernet0",
+                        "Ethernet1",
+                        "Ethernet2",
+                        "Ethernet3"
+                    ]
                 }
             ]
         ]
@@ -1538,15 +1533,12 @@
         "expected_changes": [
             [
                 {
-                    "op": "remove",
-                    "path": "/ACL_TABLE/EVERFLOWV6/ports/0"
-                }
-            ],
-            [
-                {
-                    "op": "add",
-                    "path": "/ACL_TABLE/EVERFLOWV6/ports/0",
-                    "value": "Ethernet0"
+                    "op": "replace",
+                    "path": "/ACL_TABLE/EVERFLOWV6/ports",
+                    "value": [
+                        "Ethernet0",
+                        "Ethernet8"
+                    ]
                 }
             ]
         ]
@@ -1753,8 +1745,13 @@
         "expected_changes": [
             [
                 {
-                    "op": "remove",
-                    "path": "/VLAN/Vlan1000/dhcp_servers/0"
+                    "op": "replace",
+                    "path": "/VLAN/Vlan1000/dhcp_servers",
+                    "value": [
+                        "192.0.0.2",
+                        "192.0.0.3",
+                        "192.0.0.4"
+                    ]
                 }
             ]
         ]
@@ -2383,8 +2380,8 @@
                     "value": {
                         "Ethernet0": {
                             "alias": "Eth1",
-                            "description": "Ethernet0 100G link",
                             "lanes": "67",
+                            "description": "Ethernet0 100G link",
                             "speed": "100000"
                         }
                     }
@@ -3881,6 +3878,28 @@
         "expected_changes": [
             [
                 {
+                    "op": "replace",
+                    "path": "/ACL_TABLE/EVERFLOW/ports",
+                    "value": [
+                        "Ethernet64",
+                        "Ethernet68",
+                        "Ethernet72"
+                    ]
+                }
+            ],
+            [
+                {
+                    "op": "replace",
+                    "path": "/ACL_TABLE/EVERFLOWV6/ports",
+                    "value": [
+                        "Ethernet64",
+                        "Ethernet68",
+                        "Ethernet72"
+                    ]
+                }
+            ],
+            [
+                {
                     "op": "add",
                     "path": "/BGP_NEIGHBOR/10.0.0.33",
                     "value": {
@@ -4220,20 +4239,6 @@
                     "op": "add",
                     "path": "/BGP_NEIGHBOR/fc00::a/admin_status",
                     "value": "up"
-                }
-            ],
-            [
-                {
-                    "op": "add",
-                    "path": "/ACL_TABLE/EVERFLOW/ports/0",
-                    "value": "Ethernet64"
-                }
-            ],
-            [
-                {
-                    "op": "add",
-                    "path": "/ACL_TABLE/EVERFLOWV6/ports/0",
-                    "value": "Ethernet64"
                 }
             ],
             [
@@ -5414,6 +5419,26 @@
         "expected_changes": [
             [
                 {
+                    "op": "replace",
+                    "path": "/ACL_TABLE/EVERFLOW/ports",
+                    "value": [
+                        "Ethernet68",
+                        "Ethernet72"
+                    ]
+                }
+            ],
+            [
+                {
+                    "op": "replace",
+                    "path": "/ACL_TABLE/EVERFLOWV6/ports",
+                    "value": [
+                        "Ethernet68",
+                        "Ethernet72"
+                    ]
+                }
+            ],
+            [
+                {
                     "op": "remove",
                     "path": "/INTERFACE/Ethernet64|10.0.0.32~131"
                 },
@@ -5628,18 +5653,6 @@
                 {
                     "op": "remove",
                     "path": "/BGP_NEIGHBOR/fc00::a/admin_status"
-                }
-            ],
-            [
-                {
-                    "op": "remove",
-                    "path": "/ACL_TABLE/EVERFLOW/ports/0"
-                }
-            ],
-            [
-                {
-                    "op": "remove",
-                    "path": "/ACL_TABLE/EVERFLOWV6/ports/0"
                 }
             ],
             [
