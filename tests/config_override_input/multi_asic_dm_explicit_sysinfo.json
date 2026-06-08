@@ -10,7 +10,9 @@
                 "hwsku": "Mellanox-SN3800-D112C8",
                 "peer_switch": "sonic-switch",
                 "type": "ToRRouter",
-                "suppress-fib-pending": "enabled"
+                "suppress-fib-pending": "enabled",
+                "mac": "aa:bb:cc:dd:ee:ff",
+                "platform": "custom-platform"
             }
         }
     },
@@ -28,7 +30,10 @@
                 "hwsku": "multi_asic",
                 "region": "None",
                 "sub_role": "FrontEnd",
-                "type": "LeafRouter"
+                "type": "LeafRouter",
+                "mac": "aa:bb:cc:dd:ee:ff",
+                "platform": "custom-platform",
+                "asic_id": "ff:00:00"
             }
         }
     },
@@ -46,7 +51,10 @@
                 "hwsku": "multi_asic",
                 "region": "None",
                 "sub_role": "BackEnd",
-                "type": "LeafRouter"
+                "type": "LeafRouter",
+                "mac": "aa:bb:cc:dd:ee:ff",
+                "platform": "custom-platform",
+                "asic_id": "ff:00:00"
             }
         }
     }
