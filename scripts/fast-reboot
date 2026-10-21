@@ -914,7 +914,8 @@ for service in ${SERVICES_TO_STOP}; do
     debug "Stopped ${service}"
 
     if [[ "${service}" = "swss" ]]; then
-        if [[ "$REBOOT_TYPE" = "warm-reboot" || "$REBOOT_TYPE" = "fastfast-reboot" || "$REBOOT_TYPE" = "express-reboot" ]]; then
+        if [[ "$REBOOT_TYPE" = "warm-reboot" || "$REBOOT_TYPE" = "fastfast-reboot" || "$REBOOT_TYPE" = "express-reboot" ]] ||
+           [[ "$REBOOT_TYPE" = "fast-reboot" && "$PLATFORM" == x86_64-nexthop* ]]; then
             # Pre-shutdown syncd
             initialize_pre_shutdown
 
